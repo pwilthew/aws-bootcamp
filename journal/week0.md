@@ -4,12 +4,12 @@
 ## AWS Side
 
 * Added MFA to the root user
-
-![](images/users-mfa.png)
-
 * Created an IAM user with Administrator privileges
   * Generated IAM Credentials for the user
   * Added MFA to the user
+
+![](images/users-mfa.png)
+
 * Created an AWS Billing Alarm
 
 ![](images/alarm.png)
@@ -28,7 +28,7 @@
 * Created a conceptual diagram in Lucid Charts 
   * [Diagram Link](https://lucid.app/lucidchart/2700bf74-923b-442a-b09c-5b4fc3cad86d/edit?viewport_loc=-651%2C-789%2C3200%2C2411%2C0_0&invitationId=inv_0809de19-3318-4899-a4f1-7b0fd7725991)
 * Created a logical architectural diagram in Lucid Charts
-  * [Diagram Link][https://lucid.app/lucidchart/2b16e266-b6e1-4fd4-9890-efc302f13675/edit?viewport_loc=-112%2C-13%2C2064%2C1479%2C0_0&invitationId=inv_261d1e0f-df48-46e6-a81c-9c356915f880]
+  * [Diagram Link](https://lucid.app/lucidchart/2b16e266-b6e1-4fd4-9890-efc302f13675/edit?viewport_loc=-112%2C-13%2C2064%2C1479%2C0_0&invitationId=inv_261d1e0f-df48-46e6-a81c-9c356915f880)
 
 
 ## Other
