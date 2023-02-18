@@ -34,7 +34,7 @@ Required Homework/Tasks
   * [Diagram Link](https://lucid.app/lucidchart/2b16e266-b6e1-4fd4-9890-efc302f13675/edit?viewport_loc=-112%2C-13%2C2064%2C1479%2C0_0&invitationId=inv_261d1e0f-df48-46e6-a81c-9c356915f880)
 
 
-* Added commands to automatically install the AWS CLI everytime I launch a gitpod workspace:
+* Added commands to [gitpod.yml](../.gitpod.yml) automatically install the AWS CLI everytime I launch a gitpod workspace:
   ```
   tasks:
   - name: aws-cli
