@@ -17,3 +17,5 @@
 
     * [](../backend-flask/services/notifications_activities.py)
 
+* Took care of all the compiler warnings in the front end
+
