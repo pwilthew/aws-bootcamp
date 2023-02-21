@@ -19,3 +19,8 @@
 
 * Took care of all the compiler warnings in the front end
 
+    * https://github.com/pwilthew/aws-bootcamp-cruddur-2023/commit/e8bafe195450d524d6ef4e26b8f8cea0671d9c85
+
+* Verified the front-end and the back-end are working well together for *Notifications*
+
+    ![](images/notifications-front.png)
