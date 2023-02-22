@@ -21,7 +21,7 @@
         - activities
       responses: 
         '200':
-          description: ''
+          description: 'Returns an array of activities'
           content:
             application/json:
               schema:
