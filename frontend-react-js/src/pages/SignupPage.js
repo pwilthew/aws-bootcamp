@@ -13,7 +13,8 @@ export default function SignupPage() {
   const [email, setEmail] = React.useState('');
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [errors, setErrors] = React.useState('');
+  // const [errors, setErrors] = React.useState('');
+  const [errors] = React.useState('');
 
   const onsubmit = async (event) => {
     event.preventDefault();
