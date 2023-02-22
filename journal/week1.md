@@ -42,3 +42,40 @@
 * Verified the front-end and the back-end are working well together for *Notifications*
 
     ![](images/notifications-front.png)
+
+* Added config to gitpod.yml to install psql at boot time
+  * [../gitpod.yml](../gitpod.yml)
+
+```
+  - name: postgres
+    init: |
+      curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc|sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/postgresql.gpg
+      echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+      sudo apt update
+      sudo apt install -y postgresql-client-13 libpq-dev
+```
+
+* Tried DynamoDB locally
+  ```
+  aws dynamodb create-table \
+    --endpoint-url http://localhost:8000 \
+    --table-name Music \
+    --attribute-definitions \
+        AttributeName=Artist,AttributeType=S \
+        AttributeName=SongTitle,AttributeType=S \
+    --key-schema AttributeName=Artist,KeyType=HASH AttributeName=SongTitle,KeyType=RANGE \
+    --provisioned-throughput ReadCapacityUnits=1,WriteCapacityUnits=1 \
+    --table-class STANDARD
+
+  aws dynamodb list-tables --endpoint-url http://localhost:8000
+
+  aws dynamodb scan --table-name Music --query "Items" --endpoint-url http://localhost:8000
+  ```
+  
+  ![](images/dynamodb.png)
+
+* Tried Postgres locally
+
+`psql -h localhost -U postgres`
+
+  ![](images/postgresql.png)
