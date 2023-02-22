@@ -13,6 +13,24 @@
 
     * [../backend-flask/openapi-3.0.yml](../backend-flask/openapi-3.0.yml)
 
+    ```
+      /api/activities/notifications:
+    get:
+      description: 'Return a feed of activity for accounts I follow'
+      tags:
+        - activities
+      responses: 
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Activity'
+
+    ```
+
 * Created a service that returns fake notifications
 
     * [../backend-flask/services/notifications_activities.py](../backend-flask/services/notifications_activities.py)
