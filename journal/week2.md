@@ -41,3 +41,53 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 ```
+
+* X Ray
+
+  * Added to the requirements.txt: `aws-xray-sdk`
+
+  * Added to app.py
+
+    ```
+    from aws_xray_sdk.core import xray_recorder
+    from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
+
+    xray_url = os.getenv("AWS_XRAY_URL")
+    xray_recorder.configure(service='Cruddur', dynamic_naming=xray_url)
+    XRayMiddleware(app, xray_recorder)
+    ```
+
+  * Added aws/json/xray.json
+
+  * Created X Ray group
+
+    ```  
+    aws xray create-group \
+    --group-name "backend-flask" \
+    --filter-expression "service(\"backend-flask\") {fault OR error}"
+    ```
+
+  * Created sampling rule: `aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json`   
+
+  * Added daemon service to docker compose
+
+    ```
+    xray-daemon:
+    image: "amazon/aws-xray-daemon"
+    environment:
+      AWS_ACCESS_KEY_ID: "${AWS_ACCESS_KEY_ID}"
+      AWS_SECRET_ACCESS_KEY: "${AWS_SECRET_ACCESS_KEY}"
+      AWS_REGION: "us-east-1"
+    command:
+      - "xray -o -b xray-daemon:2000"
+    ports:
+      - 2000:2000/udp
+    ```
+
+  * Added ENV variables to docker compose
+
+  ```
+    AWS_XRAY_URL: "*4567-${GITPOD_WORKSPACE_ID}.${GITPOD_WORKSPACE_CLUSTER_HOST}*"
+    AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
+  ```
+  
