@@ -1,6 +1,6 @@
 # Week 2 — Distributed Tracing
 
-## Honeycomb
+## Instrument Honeycomb with OTEL
 
 * I set  the API key for Honeycomb in my gitpod environment 
     `export HONEYCOMB_API_KEY="XXX"`
@@ -44,13 +44,17 @@ FlaskInstrumentor().instrument_app(app)
 RequestsInstrumentor().instrument()
 ```
 
-## X Ray
+* This is a screenshot of a query's results in Honeycomb:
+
+![](images/honeycomb.png)
+
+## Instrument AWS X-Ray
 
 * Added to the requirements.txt: `aws-xray-sdk`
 
 * Added to app.py
 
-  ```
+  ```py
   from aws_xray_sdk.core import xray_recorder
   from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 
@@ -61,6 +65,24 @@ RequestsInstrumentor().instrument()
 
 * Added aws/json/xray.json
 
+```json
+{
+  "SamplingRule": {
+      "RuleName": "Cruddur",
+      "ResourceARN": "*",
+      "Priority": 9000,
+      "FixedRate": 0.1,
+      "ReservoirSize": 5,
+      "ServiceName": "Cruddur",
+      "ServiceType": "*",
+      "Host": "*",
+      "HTTPMethod": "*",
+      "URLPath": "*",
+      "Version": 1
+  }
+}
+```
+
 * Created X Ray group
 
   ```  
@@ -69,7 +91,11 @@ RequestsInstrumentor().instrument()
   --filter-expression "service(\"backend-flask\") {fault OR error}"
   ```
 
+![](images/xray-create-group.png)
+
 * Created sampling rule: `aws xray create-sampling-rule --cli-input-json file://aws/json/xray.json`   
+
+![](images/sampling-rule.png)
 
 * Added daemon service to docker compose
 
@@ -93,7 +119,12 @@ RequestsInstrumentor().instrument()
   AWS_XRAY_DAEMON_ADDRESS: "xray-daemon:2000"
 ```
 
-## CloudWatch logs
+* Ta-dah
+
+![](images/xray-traces.png)
+
+
+## Configure custom logger to send to CloudWatch Logs
 
 * Added to requirements.txt:
 
@@ -101,10 +132,100 @@ RequestsInstrumentor().instrument()
 
 * Added to app.py
 
-```
+```py
 import watchtower
 import logging
 from time import strftime
 ```
 
-* 
+```py
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.DEBUG)
+console_handler = logging.StreamHandler()
+cw_handler = watchtower.CloudWatchLogHandler(log_group='cruddur')
+LOGGER.addHandler(console_handler)
+LOGGER.addHandler(cw_handler)
+LOGGER.info("some message")
+```
+
+```py
+@app.after_request
+def after_request(response):
+    timestamp = strftime('[%Y-%b-%d %H:%M]')
+    LOGGER.error('%s %s %s %s %s %s', timestamp, request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
+```
+
+* Added to home_activities.py:
+
+```py
+logger.info("Home Activities")
+```
+
+* And ta-dah, this was definitely the easiest:
+
+![](images/cloudwatch-logs.png)
+
+## Integrate Rollbar and capture and error
+
+* In https://rollbar.com/, created a new project in Rollbar called Cruddur
+
+* Added the following to requirements.txt
+
+```
+blinker
+rollbar
+```
+
+* Set the rollbar token in our gitpod env
+
+```sh
+export ROLLBAR_ACCESS_TOKEN=""
+gp env ROLLBAR_ACCESS_TOKEN=""
+```
+
+* Added to backend-flask for docker-compose.yml
+
+`ROLLBAR_ACCESS_TOKEN: "${ROLLBAR_ACCESS_TOKEN}"`
+
+* Added Rollbar imports and function to app.py
+
+```py
+import rollbar
+import rollbar.contrib.flask
+from flask import got_request_exception
+```
+
+```py
+rollbar_access_token = os.getenv('ROLLBAR_ACCESS_TOKEN')
+@app.before_first_request
+def init_rollbar():
+    """init rollbar module"""
+    rollbar.init(
+        # access token
+        rollbar_access_token,
+        # environment name
+        'production',
+        # server root directory, makes tracebacks prettier
+        root=os.path.dirname(os.path.realpath(__file__)),
+        # flask already sets up logging
+        allow_logging_basic_config=False)
+
+    # send exceptions from `app` to rollbar, using flask's signal system.
+    got_request_exception.connect(rollbar.contrib.flask.report_exception, app)
+```
+
+* Added an endpoint just for testing rollbar to app.py
+
+```py
+@app.route('/rollbar/test')
+def rollbar_test():
+    rollbar.report_message('Hello World!', 'warning')
+    return "Hello World!"
+```
+
+![](images/rollbar-endpoint.png)
+
+* The error made it to Rollbar:
+
+![](images/rollbar-items.png)
