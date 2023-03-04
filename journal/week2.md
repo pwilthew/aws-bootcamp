@@ -3,18 +3,22 @@
 ## Instrument Honeycomb with OTEL
 
 * I set  the API key for Honeycomb in my gitpod environment 
-    `export HONEYCOMB_API_KEY="XXX"`
-    `gp env HONEYCOMB_API_KEY="XXX"`
-    `export HONEYCOMB_SERVICE_NAME="Cruddur"`
-    `gp env HONEYCOMB_SERVICE_NAME="Cruddur"`
 
+```
+export HONEYCOMB_API_KEY="XXX"
+gp env HONEYCOMB_API_KEY="XXX"
+export HONEYCOMB_SERVICE_NAME="Cruddur"
+gp env HONEYCOMB_SERVICE_NAME="Cruddur"
+```
 
 * Added env vars to the `docker-compose.yml` file
-    * Open Telemetry to send to Honeycomb
-    
-    `OTEL_SERVICE_NAME: "backend-flask"`
-    `OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"`
-    `OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"`
+  * Open Telemetry to send to Honeycomb
+
+  ```
+  OTEL_SERVICE_NAME: "backend-flask"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "https://api.honeycomb.io"
+  OTEL_EXPORTER_OTLP_HEADERS: "x-honeycomb-team=${HONEYCOMB_API_KEY}"
+  ```
 
 * Added Open Telemetry Python dependencies to `requirements.txt`
 
