@@ -4,7 +4,7 @@
 
 Set a very basic and simple AWS Cognito User pool.
 
-![](01-provision-user-pool.png)
+![](images/01-provision-user-pool.png)
 
 
 ## Install and configure Amplify client-side library for Amazon Congito
@@ -23,32 +23,32 @@ The SigininPage, SignupPage, RecoverPage, were modified for integration with Cog
 
 Now a user can register themselves, can log in, and can recover their account when their password is forgotten.
 
-![](02-user-registered.png)
+![](images/02-user-registered.png)
 
-![](03-login-new-user.png)
+![](images/03-login-new-user.png)
 
-![](04-user-creation-verification-email.png)
+![](images/04-user-creation-verification-email.png)
 
-![](05-user-creation-verify-account.png)
+![](images/05-user-creation-verify-account.png)
 
-![](06-password-recovery.png)
+![](images/06-password-recovery.png)
 
-![](07-password-reset-screen.png)
+![](images/07-password-reset-screen.png)
 
 
 ## Show conditional elements and data based on logged in or logged out
 
 We can now control that certain elements are only shown to authenticated users.
 
-![](11-message-for-authed-users.png)
+![](images/11-message-for-authed-users.png)
 
 ## Verify JWT Token server side to serve authenticated API endpoints in Flask Application
 
 We can validate JWT in the backend.
 
-![](08-bearer-token.png)
+![](images/08-bearer-token.png)
 
-![](09-authenticated-jwt.png)
+![](images/09-authenticated-jwt.png)
 
-![](10-unauthenticated-jwt.png)
+![](images/10-unauthenticated-jwt.png)
 
