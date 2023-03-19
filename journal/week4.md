@@ -69,3 +69,30 @@ Created the following bash scripts:
 Read from the postgres database for the Home Activities page.
 
 ![](images/04-postgres-driver.png)
+
+## Connect Gitpod to RDS Instance
+
+```
+GITPOD_IP=$(curl ifconfig.me)
+```
+
+```
+export DB_SG_ID="sg-055c6fc61826b8a6e"
+gp env DB_SG_ID="sg-055c6fc61826b8a6e"
+export DB_SG_RULE_ID="sgr-06920401c756c5e5a"
+gp env DB_SG_RULE_ID="sgr-06920401c756c5e5a"
+```
+
+```
+aws ec2 modify-security-group-rules \
+    --group-id $DB_SG_ID \
+    --security-group-rules "SecurityGroupRuleId=$DB_SG_RULE_ID,SecurityGroupRule={IpProtocol=tcp,FromPort=5432,ToPort=5432,CidrIpv4=$GITPOD_IP/32}"
+```
+
+Added the following to gitpod.yml
+```
+  - name: rds
+    command: |
+      export GITPOD_IP=$(curl ifconfig.me)
+      source "$THEIA_WORKSPACE_ROOT/backend-flask/rds-update-sg"
+```
