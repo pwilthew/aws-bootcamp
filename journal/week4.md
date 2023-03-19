@@ -64,3 +64,8 @@ Created the following bash scripts:
 
 ![](images/03-bash-scripts.png)
 
+## Implement a postgres client for python using a connection pool
+
+Read from the postgres database for the Home Activities page.
+
+![](images/04-postgres-driver.png)
