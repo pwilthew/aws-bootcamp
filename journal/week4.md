@@ -58,3 +58,6 @@ Created the following bash scripts:
 * db-create
 * db-drop
 * db-schema-load
+* db-sessions
+* db-seed
+* and db-setup (which executes the others)
