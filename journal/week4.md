@@ -61,3 +61,6 @@ Created the following bash scripts:
 * db-sessions
 * db-seed
 * and db-setup (which executes the others)
+
+![](images/03-bash-scripts.png)
+
