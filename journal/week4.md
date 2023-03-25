@@ -96,3 +96,15 @@ Added the following to gitpod.yml
       export GITPOD_IP=$(curl ifconfig.me)
       source "$THEIA_WORKSPACE_ROOT/backend-flask/rds-update-sg"
 ```
+
+# Create AWS Cognito trigger to insert user into database
+
+Created a lambda with the layer at the following address as it is in my region:
+
+- arn:aws:lambda:us-east-1:898466741470:layer:psycopg2-py38:2
+
+![](images/05-lambda.png)
+
+Successfully registered a user and triggered the lambda function to add the user to the database:
+
+![](images/06-lambda-triggered.png)
