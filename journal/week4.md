@@ -108,3 +108,11 @@ Created a lambda with the layer at the following address as it is in my region:
 Successfully registered a user and triggered the lambda function to add the user to the database:
 
 ![](images/06-lambda-triggered.png)
+
+# Create new activities with a database insert
+
+New activities are inserted into the database successfully:
+
+![](images/07-first-crud-ui.png)
+
+![](images/08-first-crud-db.png)
